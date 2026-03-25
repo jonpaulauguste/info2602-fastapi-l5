@@ -8,7 +8,6 @@ from fastapi.security import OAuth2PasswordRequestForm
 from typing import Annotated
 from fastapi import status
 from fastapi.responses import HTMLResponse, RedirectResponse
-from app.routers.auth import AdminDep
 from app.utilities import flash
 from . import templates
 from app.pagination import Pagination

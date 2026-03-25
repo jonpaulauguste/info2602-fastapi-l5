@@ -3,7 +3,7 @@ from fastapi.responses import HTMLResponse, RedirectResponse
 from sqlmodel import select
 from app.database import SessionDep
 from app.models import *
-from app.auth import AuthDep, IsUserLoggedIn
+from app.auth import AuthDep, IsUserLoggedIn, get_current_user, is_admin
 from fastapi.security import OAuth2PasswordRequestForm
 from typing import Annotated
 from fastapi import status
@@ -32,3 +32,17 @@ async def index(
             return RedirectResponse(url="/admin", status_code=status.HTTP_303_SEE_OTHER)
         return RedirectResponse(url="/app", status_code=status.HTTP_303_SEE_OTHER)
     return RedirectResponse(url="/login", status_code=status.HTTP_303_SEE_OTHER)
+
+
+@home_router.get("/app", response_class=HTMLResponse)
+async def app_dashbaord(
+    request: Request,
+    user: AuthDep
+):
+    return templates.TemplateResponse(
+        request=request,
+        name="todo.html",
+        context={
+            "current_user": user
+        }
+    )
